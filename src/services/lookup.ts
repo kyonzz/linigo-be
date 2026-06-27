@@ -17,6 +17,13 @@ export interface Definition {
   examples: string[]
 }
 
+export interface Entry {
+  part_of_speech: string
+  definitions: Definition[]
+  synonyms: string[]
+  translation: string
+}
+
 export interface WordForm {
   word: string
   part_of_speech: string
@@ -30,13 +37,10 @@ export interface Phrase {
 
 export interface LookupResult {
   word: string
-  part_of_speech: string
   pronunciation: { uk_ipa: string; us_ipa: string }
-  definitions: Definition[]
+  entries: Entry[]
   word_family: WordForm[]
   phrases: Phrase[]
-  synonyms: string[]
-  translation: string
 }
 
 type GenerativeModel = ReturnType<InstanceType<typeof GoogleGenerativeAI>['getGenerativeModel']>

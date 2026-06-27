@@ -26,21 +26,25 @@ function mockValidAuth() {
 
 const fullEntry = {
   word: 'succeed',
-  part_of_speech: 'verb',
   pronunciation: { uk_ipa: '/səkˈsiːd/', us_ipa: '/səkˈsiːd/' },
-  definitions: [
+  entries: [
     {
-      cefr_level: 'B1',
-      grammar_label: '[I]',
-      definition: 'to achieve something you have been trying to do',
-      definition_translation: 'đạt được điều gì đó',
-      examples: ['She succeeded in getting the job.', 'Our plan succeeded.'],
+      part_of_speech: 'verb',
+      definitions: [
+        {
+          cefr_level: 'B1',
+          grammar_label: '[I]',
+          definition: 'to achieve something you have been trying to do',
+          definition_translation: 'đạt được điều gì đó',
+          examples: ['She succeeded in getting the job.', 'Our plan succeeded.'],
+        },
+      ],
+      synonyms: ['achieve', 'accomplish'],
+      translation: 'thành công',
     },
   ],
   word_family: [{ word: 'success', part_of_speech: 'noun' }],
   phrases: [{ phrase: 'succeed in doing something', definition: 'to manage to do', example: 'Did you succeed?' }],
-  synonyms: ['achieve', 'accomplish'],
-  translation: 'thành công',
 }
 
 function makeMockLookup(impl: (...args: unknown[]) => unknown) {
@@ -69,10 +73,10 @@ describe('POST /api/v1/lookup', () => {
     expect(res.status).toBe(200)
     expect(res.body.error).toBeNull()
     expect(res.body.data.word).toBe('succeed')
-    expect(res.body.data.part_of_speech).toBe('verb')
-    expect(Array.isArray(res.body.data.definitions)).toBe(true)
-    expect(res.body.data.definitions[0].cefr_level).toBe('B1')
-    expect(res.body.data.translation).toBe('thành công')
+    expect(Array.isArray(res.body.data.entries)).toBe(true)
+    expect(res.body.data.entries[0].part_of_speech).toBe('verb')
+    expect(res.body.data.entries[0].definitions[0].cefr_level).toBe('B1')
+    expect(res.body.data.entries[0].translation).toBe('thành công')
   })
 
   it('returns 400 for empty word', async () => {

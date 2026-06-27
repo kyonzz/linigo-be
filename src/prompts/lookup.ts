@@ -7,21 +7,27 @@ Target learner language for translations/notes: "${nativeLanguage}" (ISO 639-1 c
 Return ONLY a JSON object with this exact structure (no markdown, no extra text):
 {
   "word": "<the word as given>",
-  "part_of_speech": "<verb|noun|adjective|adverb|preposition|conjunction|pronoun|interjection>",
   "pronunciation": {
     "uk_ipa": "<IPA string for UK English>",
     "us_ipa": "<IPA string for US English>"
   },
-  "definitions": [
+  "entries": [
     {
-      "cefr_level": "<A1|A2|B1|B2|C1|C2 or null if unknown>",
-      "grammar_label": "<[I]|[T]|[C]|[U]|[I or T]|[C or U] or null>",
-      "definition": "<clear, plain-English definition suitable for a language learner>",
-      "definition_translation": "<definition translated into ${nativeLanguage}>",
-      "examples": [
-        "<natural example sentence using the word in context>",
-        "<second example sentence>"
-      ]
+      "part_of_speech": "<verb|noun|adjective|adverb|preposition|conjunction|pronoun|interjection>",
+      "definitions": [
+        {
+          "cefr_level": "<A1|A2|B1|B2|C1|C2 or null if unknown>",
+          "grammar_label": "<[I]|[T]|[C]|[U]|[I or T]|[C or U] or null>",
+          "definition": "<clear, plain-English definition suitable for a language learner>",
+          "definition_translation": "<definition translated into ${nativeLanguage}>",
+          "examples": [
+            "<natural example sentence using the word in context>",
+            "<second example sentence>"
+          ]
+        }
+      ],
+      "synonyms": ["<synonym1>", "<synonym2>"],
+      "translation": "<direct translation of the word for this part of speech into ${nativeLanguage}>"
     }
   ],
   "word_family": [
@@ -33,21 +39,19 @@ Return ONLY a JSON object with this exact structure (no markdown, no extra text)
       "definition": "<plain-English definition>",
       "example": "<example sentence>"
     }
-  ],
-  "synonyms": ["<synonym1>", "<synonym2>"],
-  "translation": "<direct translation of the word into ${nativeLanguage}>"
+  ]
 }
 
 Rules:
-- definitions: include ALL common senses, ordered from most common to least common
-- cefr_level: assign carefully; A1=very basic everyday words, A2=basic, B1=intermediate, B2=upper-intermediate, C1=advanced, C2=near-native mastery
+- entries: one entry per part of speech. If the word can be a noun AND a verb AND an adjective, include all three as separate entries
+- definitions within each entry: include ALL common senses for that part of speech, ordered most common to least common
+- cefr_level: assign carefully; A1=very basic, A2=basic, B1=intermediate, B2=upper-intermediate, C1=advanced, C2=near-native
 - grammar_label: use [I] for intransitive verbs, [T] for transitive verbs, [C] for countable nouns, [U] for uncountable nouns
-- examples: use realistic, natural sentences — not textbook clichés. Show the word used naturally in everyday contexts.
-- word_family: include 3–6 related forms (e.g., for "succeed": success, successful, successfully, successive, successor)
-- phrases: include 2–4 of the most common phrasal verbs or idioms containing the word
-- synonyms: list 3–5 near-synonyms appropriate for a learner
-- definition_translation: translate the full definition sentence into ${nativeLanguage}, not just the word itself
-- translation: give the most common direct translation of the word into ${nativeLanguage}
+- examples: realistic, natural sentences — not textbook clichés
+- synonyms: 3–5 near-synonyms per part of speech
+- translation: most common translation for that specific part of speech
+- word_family: 3–6 related forms shared across all entries
+- phrases: 2–4 of the most common phrasal verbs or idioms
 
 If the input is not a valid English word or short phrase, return exactly:
 {"error": "NOT_ENGLISH_WORD", "message": "The input is not a recognized English word or phrase."}
